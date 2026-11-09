@@ -1,0 +1,45 @@
+root SWFC(haveStaffCard: Bool, haveManagementCard: Bool, haveRoomKey: Bool, haveHotelStaffCard: Bool, id: Int, aggregatedWeight: Int){
+
+    def buildingHeight: Int = 492
+
+    // Define what means "TenantsOnly"
+    constraint TenantsOnly{
+        require haveStaffCard
+    }
+
+    // Define what means ManagementOnly 
+    constraint ManagementOnly{ 
+        require haveManagementCard
+    }
+
+    constraint HotelGuestOnly{
+        require haveRoomKey
+    }
+
+    constraint HotelStaffOnly{
+        require haveHotelStaffCard
+    }
+
+    // Define what means CanFitIntoPassengerElevator
+    constraint CanFitIntoPassengerElevator{
+        require aggregatedWeight < 200
+    }
+
+    
+    // Actually parsed as (after visiting):
+    def CanFitIntoPassengerElevator(aggregatedWeight: Int): Bool = {
+        aggregatedWeight < 200
+    }
+
+
+
+    constraint OccasionalFreightPermitCheck{
+        // emit "Need a freight permit to get through"
+        require false
+    }
+
+    constraint OccasionalGE4Restriction{
+        // emit "Observatory employees may stop you from accessing GE4 elevator"
+        require false
+    }
+}
